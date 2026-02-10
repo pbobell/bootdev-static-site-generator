@@ -1,11 +1,12 @@
 from enum import Enum
+from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TextType(Enum):
-    PLAIN = "plain"
+    TEXT = "text"
     BOLD = "bold"
     ITALIC = "italic"
     CODE = "code"
-    LINT = "link"
+    LINK = "link"
     IMAGE = "image"
 
 class TextNode:
@@ -24,3 +25,24 @@ class TextNode:
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
     
+def text_node_to_html_node(text_node):
+    if text_node.text_type == TextType.TEXT:
+        return LeafNode(None, value=text_node.text)
+    elif text_node.text_type == TextType.BOLD:
+        return LeafNode(tag="b", value=text_node.text)
+    elif text_node.text_type == TextType.ITALIC:
+        return LeafNode(tag="i", value=text_node.text)
+    elif text_node.text_type == TextType.CODE:
+        return LeafNode(tag="code", value=text_node.text)
+    elif text_node.text_type == TextType.LINK:
+        return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+    elif text_node.text_type == TextType.IMAGE:
+        return LeafNode(tag="img", value="", props={"src": text_node.url, "alt": text_node.text})
+    else:
+        raise Exception("invalid text_type")
+
+#def is_valid_text_type(enum_class, value):
+#    return value in [e.value for e in enum_class]
+
+#def is_not_valid_text_type(enum_class, value):
+#    return not is_valid_text_type(enum_class, value)

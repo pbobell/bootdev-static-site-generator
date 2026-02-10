@@ -35,10 +35,7 @@ class LeafNode(HTMLNode):
         if self.tag == None:
             return str(self.value)
         else:
-            html_string = '<' + self.tag
-            if self.props:
-                html_string += self.props_to_html()
-            html_string += '>' + self.value + '</' + self.tag + '>'
+            html_string = '<' + self.tag + self.props_to_html() + '>' + self.value + '</' + self.tag + '>'
             return html_string
     
     def __repr__(self):
@@ -59,5 +56,5 @@ class ParentNode(HTMLNode):
         children_html = ""
         for child in self.children:
             children_html += child.to_html()
-        html_string = '<' + self.tag + '>' + children_html + self.props.props_to_html() + '</' + self.tag + '>'
+        html_string = '<' + self.tag + self.props_to_html() + '>' + children_html + '</' + self.tag + '>'
         return html_string
